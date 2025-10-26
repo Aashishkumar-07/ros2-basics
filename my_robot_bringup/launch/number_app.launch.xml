@@ -1,0 +1,13 @@
+<launch>
+    <node pkg='my_py_pkg' exec='number_publisher' name="number_publisher_007" namespace="/abc">
+        <remap from="number" to="my_number"/>
+    </node>
+    <node pkg='my_py_pkg' exec='number_counter' name="number_counter_007" namespace="/abc">
+        <remap from="number" to="my_number"/>
+    </node>
+    <node pkg='my_py_pkg' exec='robot_news_station' name="my_robot">
+        <param name="robot_name" value="vir" />
+    </node>
+</launch>
+
+
