@@ -1,9 +1,7 @@
-## ros2-basics
-
+## ROS2 Basics
 #### This repository contains learning &amp; implementation of various ROS2 (Robot Operating System 2) features such as:
-
 - 📦 Packages – Creating and managing ROS2 packages
-- 🤖 Nodes – Writing and launching publisher/subscriber nodes
+- 🤖 Nodes – Writing and launching publisher/subscriber and client/server nodes
 - 🗣️ Topics – Exchanging data between nodes through publishers and subscribers
 - 🧩 Services – Implementing client-server interactions
 - ⚙️ Parameters – Configuring nodes dynamically
@@ -11,94 +9,103 @@
 - 🐢 Turtlesim – Simulating and controlling turtles for practice and visualization
 - 🧰 RQT – Visualizing and debugging nodes using RQT tools
 
+<br>
+<br>
 
-### Turtlesim project
+## Turtlesim project
+### 🎯 Goal
+This project uses the turtlesim package in ROS 2 to demonstrate *object motion* and *target tracking* in a 2D plane. The default `turtlesim_node` provides a turtle in a GUI and `teleop_key_node` captures keyboard input. The goal is to build custom nodes that allow the turtle to move autonomously and reach dynamically spawned targets at different locations.
 
-#### Goal
+<br>
 
-This project uses the turtlesim package in ROS 2 to illustrate object-motion and target-tracking in a 2D plane. The default turtlesim_node provides a simple turtle in a GUI, and teleop_key_node captures keyboard input. My goal is to build custom nodes that allow the turtle to move autonomously and reach dynamically spawned targets at different locations. 
+### 🧭 Logic behind moving towards the target in a 2D plane
+### a. Distance calculation
+<p align="center">
+  <img src="https://images.prismic.io/turing/65a53be67a5e8b1120d58808_image1_11zon_fa4497e473.webp?auto=format,compress" 
+       alt="Euclidean distance calculation" 
+       width="400">
+</p>
 
-### **🧭 Logic Behind Moving Towards the Target in a 2D Plane**
+The distance between two points in a 2D plane is calculated using the `Euclidean distance formula`, which is a generalized version of the `Pythagorean theorem`. This gives the magnitude of how far the turtle is from the target.
 
-The **distance** between two points in a 2D plane is calculated using the **Euclidean distance formula**, which is a generalized version of the **Pythagorean theorem**. This gives the *magnitude* of how far the turtle is from the target.
-![image.png](attachment:b67edbd1-0574-46a8-b057-8d8c79553745:image.png)
-
-To understand the concept of **euclidean** **distance**, you can refer to this short video:
+To understand the concept of euclidean distance, you can refer to this short video:
 👉 [Euclidean Distance Explained](https://youtu.be/3rPwfmrCwVw?si=Fj8WuYipXjXTlkV8)
----
 
-However, the **direction** the turtle must move in depends on the **angle difference** between:
+<br>
 
-- the **angle to the target**
-- the **turtle’s current heading**, and
+### b. Angle calculation
+The direction the turtle must move depends on the angle difference between:
+- the angle to the target
+- the turtle’s current heading
+  
+This angle to the target is calculated using the `atan2` function.
 
-This angular difference is calculated using the **`atan2`** function.
-
-### **📐 Understanding `atan` and `atan2`**
-
+#### 📐 Understanding `atan` and `atan2`
 #### 🔸 `atan` (Arc Tangent)
+The tangent function is `periodic` after every `π radians` 
+<p align="center">
+     <img src="https://latex.codecogs.com/png.image?\dpi{120}&space;\tan\theta=\frac{\text{opposite}}{\text{adjacent}}" alt="tan theta formula"/>
+     &nbsp;&nbsp;&nbsp;&nbsp;
+     <img src="https://latex.codecogs.com/png.image?\dpi{120}&space;\tan\theta=\frac{\sin\theta}{\cos\theta}" alt="tan theta sine cosine"/>
+</p>
+Observation for angles in below range :
+<p align="center">
+   <img src="https://latex.codecogs.com/png.image?\dpi{120}&space;\tan(0)=\frac{\sin(0)}{\cos(0)}=\frac{0}{1}=0" alt="tan(0) formula" />
+   &nbsp;&nbsp;&nbsp;&nbsp;
+   <img src="https://latex.codecogs.com/png.image?\dpi{120}&space;\tan(90^\circ)=\frac{\sin(90^\circ)}{\cos(90^\circ)}=\frac{1}{0}=\text{undefined}" alt="tan(90) formula" />
+</p>
 
-We know:
+<p align="center">
+  <img src="https://github.com/Aashishkumar-07/ros2-basics/blob/main/assets/images/tan_graph.png?raw=true" 
+       alt="Tangent Function Graph" width="500"/>
+</p>
 
-\tan \theta = \frac{\text{opposite side}}{\text{adjacent side}}
+- `tan(−π/2->0)` : increases from −∞ to 0
+- `tan(0->π/2)` :  increases from 0 to +∞
+  
+It is observed for the domain `(−π/2, π/2)` the range has a unique value for every θ. After that the values keep repeating for intervals  `(π/2, 3π/2)`, `(3π/2, 5π/2).` So the principal domain  `(−π/2, π/2)`  was chosen.
 
-The tangent function is **periodic** every **π radians**, because:
+<br>
 
-\tan \theta = \frac{\sin \theta}{\cos \theta}
 
-where sine and cosine repeat every 2π
+> 💭 **Question:**  
+> Given that the tangent function is periodic with a period of π, what makes (−π/2, π/2) the preferred principal domain rather than (0, π) or another equivalent interval?
 
-At specific angles:
+The chosen domain has to be `continuous`, `monotonically increasing` with `one-to-one unique mapping`. This makes the above mentioned intervals valid.
+<p align="left">
+  <img src="https://github.com/Aashishkumar-07/ros2-basics/blob/main/assets/images/domain_selection_rule.png?raw=true" 
+       alt="Domain Selection Rule for Tangent Function" 
+       width="600">
+</p>
 
-- **θ = 0:** sin(0) = 0, cos(0) = 1 → tan(0) = 0
-- **θ = π/2:** sin(π/2) = 1 cos(π/2) = 0 → tan(π/2) → ∞ (undefined)
-
-Between:
-
-- **−π/2 and 0:** tan(θ) increases from −∞ to 0
-- **0 and π/2:** tan(θ) increases from 0 to +∞
-
-Hence, the interval **(−π/2, π/2)** gives a *unique* tan(θ) value for every θ. After that the values keep repeating for intervals  **(π/2, 3π/2), (3π/2, 5π/2).** The principal domain chosen was **(−π/2, π/2)**
-
-**Domain:** (−π/2, π/2) 
-
-**Range:** **(**−∞, +∞**)**
-
-For inverse/arc tan, each domain value must give a unique value, so the principal domain  **(−π/2, π/2)**  was chosen.
-
-**Domain:** (−∞, +∞) 
-
-**Range:** **(**−π/2, π/2**)**
-
-![image.png](attachment:e3c71f52-ac4e-45a9-bb84-baba47652f4f:image.png)
+<br>
 
 #### 🔸 The Limitation of `atan(y/x)`
 
-`atan(y/x)` only gives you the **slope angle**. It doesn’t know which **quadrant** the point (x, y) lies in.
+<p align="center">
+  <img src="https://github.com/Aashishkumar-07/ros2-basics/blob/main/assets/images/atan_values.png" 
+       alt="atan_values"
+       width="800"/>
+</p>
 
-For example:
+`atan(y/x)` only gives  the `slope angle`. It does not take into account which `quadrant` the point (x, y) lies in. Given its range of `(−π/2, π/2)` for any given domain it covers `only the 1st & 4th quadrants` but in a real world scenario the target can be at any of these quadrants making both slope and quadrant an important parameter for determining the correct direction
 
-- (1, 1) → π/4
-- (−1, −1) → π/4 ❌ (should be −3π/4)
-
- **`atan`**, has a range of **(−π/2, π/2)** for any given domain so it is covering **only the 1st & 4th quadrants** 
-
-![ `atan` cannot distinguish between points diagonally opposite to each other.](attachment:c7da76c6-3d09-4815-b711-df7e59fc4e05:image.png)
-
+<br>
 
 #### 🔸 `atan2(y, x)` — the Quadrant-Aware Version ✅
 
-`atan2(y, x)` solves this by considering both **x** and **y signs**, allowing it to determine the **true angle** from the origin to the point (x, y).
+`atan2(y, x)` solves this by considering both `x and `y signs` ,  allowing it to determine the `true angle` from the origin to the target point (x, y).
 
-arc tan
+**Domain and range for `tan⁻¹(z)`**
 
-- **Domain:** (−∞, +∞)
-- **Range:** **(−π, π)** — covering *all 4 quadrants*
-- *Here for each inverse/arc tan  domain (-pi,pi) there is a unique range*
+- Domain: (−∞, +∞)
+- Range: (−π, π) — covering `all 4 quadrants`
+  
+Thus, `atan2` gives the `correct angular direction` of the target relative to the turtle’s current position which is essential when moving a robot in a 2D plane.
 
-Thus, `atan2` gives the **correct direction** of the target relative to the turtle’s current position — essential when moving a robot or turtle in a 2D plane.
+<br>
 
-**⚙️ Computing Velocities for Motion Control**
+### c. **Computing velocities for motion control**
 
 ```
 def linear_vel(self, constant=1):
@@ -117,34 +124,47 @@ def angular_vel(self, constant=2):
     return angular_vel
 ```
 
-**🌀 Angular Adjustment**
+**🌀 Angular adjustment**
 
-- *steering angle* - Angle to the target turtle(*green turtle*) from current turtle(*blue* *turtle*).
-`atan2`(y2-y1, x2-x1) = `atan2`(0.55,0.06) = 83.77 degree
-- *self.parent_pose.theta* - turtle’s(*blue*) current heading angle  = 178 degree
-- *angle_diff* = 83.77 - 178 = -94 degree  The turtle (*blue*) must rotate 94 degrees clockwise from its current facing angle to reach the target(*green*).
+<p align="center">
+  <img src="https://github.com/Aashishkumar-07/ros2-basics/blob/main/assets/images/path_computation_to_target.png" 
+       alt="atan_values"
+       width="500"/>
+</p>
 
-![image.png](attachment:e630347d-a6ea-4ddc-b94b-02def00e240a:image.png)
+```atan2(y2-y1, x2-x1) = atan2(0.55,0.06) = 83.77 degree```
 
-- *steering angle* - Angle to the target turtle(*green turtle*) from current turtle(*blue* *turtle*).
-`atan2`(y2-y1, x2-x1) = `atan2`(10,0) = 90 degree
-- *self.parent_pose.theta* - turtle’s(*blue*) current heading angle  = -178 degree
-- *angle_diff* = 90 - (-178) = 268 degree  The turtle (*blue*) must rotate 268 degrees anti clockwise from its current facing angle to reach the target(*green*). It is taking the longer path rather than the shorter path of -82 degree (i.e moving 82 degree clockwise). To achieve this whenever the angle_diff becomes greater than 180 / -180 degree (pi /-pi radians) we adjust it
+- *steering angle*: angle to the `target turtle(green)` from `current turtle(blue)` 
+- *self.parent_pose.theta*:   = 178 degree
+- *angle_diff*: `83.77 - 178 = -94 degree`. The `current turtle(blue)` must rotate `94 degrees clockwise` from its current facing angle to reach the `target turtle(green)`.
 
-target : (-5,5) , source : (-5,-5)
+<br>
 
-![image.png](attachment:9cbc0ceb-f7c8-464f-a368-4db036500e5f:image.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Aashishkumar-07/ros2-basics/main/assets/images/longer_shorter_path_to_target.png" 
+       alt="atan_values"
+       width="500">
+  <br>
+  <em>Source: (-5, -5)  Target: (-5, 5)</em>
+</p>
 
-The angular constant and linear constant are multiplied with angular velocity and linear velocity. These constants ensure that when the distance to cover is large or angle to move is large, these velocity remains high and when they reach closer to target the velocity remains slow ensuring what ?
 
-### ⚙️ Velocity Control
+`atan2(y2-y1, x2-x1) = atan2(10,0) = 90 degree`
 
-Both **linear** and **angular velocities** are multiplied by constants:
+- *steering angle*: angle to the `target turtle(green)` from `current turtle(blue)`
+- *self.parent_pose.theta*: current heading angle of `turtle’(blue)`  = -178 degree
+- *angle_diff*: `90 - (-178) = 268 degree`  The `current turtle(blue)` must rotate `268 degrees anti clockwise` from its current facing angle to reach the `target turtle(green)`. It is taking the `longer path rather than the shorter path` of -82 degree (i.e moving `82 degree clockwise`). To achieve this whenever the `angle_diff becomes greater than 180 / -180 degree (pi /-pi radians) we adjust it`
+
+<br>
+
+### d.Velocity control
+
+Both `linear` &amp; `angular velocities` are multiplied by constants:
 
 - **`linear_vel = constant × euclidean_distance`**
 - **`angular_vel = constant × angle_diff`**
 
-These *constants* act as **gain factors**, ensuring smooth motion:
+These *constants* act as `gain factors`, ensuring smooth motion:
 
-- When the **distance** or **angle** to the target is **large**, the velocity is **higher** — enabling faster movement.
-- As the turtle gets **closer** to the target (distance or angle difference decreases), the velocity **slows down** — ensuring **smooth deceleration** and **precise alignment**, rather than overshooting or oscillating
+- When the `distance` or `angle` to the target is `large`, the velocity is `higher` enabling faster movement.
+- As the turtle gets `closer` to the target (distance or angle difference decreases), the velocity `slows down` — ensuring `smooth deceleration` and `precise alignment`, rather than overshooting or oscillating
