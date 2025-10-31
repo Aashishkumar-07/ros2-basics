@@ -77,7 +77,7 @@ It is observed for the domain `(−π/2, π/2)` the range has a unique value for
 <br>
 <br>
 
-> 💭 **Question:**  
+>  **🤔 Why this domain?:**  
 > Given that the tangent function is periodic with a period of π, what makes (−π/2, π/2) the preferred principal domain rather than (0, π) or another equivalent interval?
 
 - The chosen domain has to be `continuous`, `monotonically increasing` with `one-to-one unique mapping`. This makes the above mentioned intervals valid.
