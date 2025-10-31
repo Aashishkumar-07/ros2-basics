@@ -1,13 +1,13 @@
 ## ROS2 Basics
 #### This repository contains learning &amp; implementation of various ROS2 (Robot Operating System 2) features such as:
-- 📦 Packages – Creating and managing ROS2 packages
-- 🤖 Nodes – Writing and launching publisher/subscriber and client/server nodes
-- 🗣️ Topics – Exchanging data between nodes through publishers and subscribers
-- 🧩 Services – Implementing client-server interactions
-- ⚙️ Parameters – Configuring nodes dynamically
-- 💾 Bags – Recording and replaying ROS2 topic data
-- 🐢 Turtlesim – Simulating and controlling turtles for practice and visualization
-- 🧰 RQT – Visualizing and debugging nodes using RQT tools
+- `📦 Packages` – Independent, reusable unit comprising multiple nodes (e.g., a camera package).
+- `🤖 Nodes` – Individual subprograms, each performing a specific function (e.g., camera driver, image processor).
+- `🗣️ Topics` – Nodes publish messages to a topic which are received by subscribers in real time through DDS’s publish–subscribe mechanism.
+- `🧩 Services` – It follows a client-server model with a request & response message where only 1 server can exist per service but multiple clients can connect to it.
+- `⚙️ Parameters` – named configuration values declared in code whose value are passed at node runtime.
+- `💾 Bags` – useful for recording data from topics for any amount of time &amp; then replaying that data later
+- `🐢 Turtlesim` – The “Hello World 🌍” of robotics used for simulating &amp; controlling turtles for learning &amp; visualization
+- `🧰 RQT` – A GUI toolkit for visualizing and debugging ROS2 nodes.
 
 <br>
 <br>
@@ -189,7 +189,7 @@ These *constants* act as `gain factors`, ensuring smooth motion:
 
 <br>
 
-### 🏗️ Architecture diagram 
+### 📡 Node communication diagram 
 
 <p align="center">
   <img src="https://github.com/Aashishkumar-07/ros2-basics/blob/main/assets/images/turtlesim_node_architecture.png" 
