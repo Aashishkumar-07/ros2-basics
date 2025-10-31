@@ -19,7 +19,7 @@ This project uses the turtlesim package in ROS 2 to demonstrate *object motion* 
 <br>
 
 ### 🧭 Logic behind moving towards the target in a 2D plane
-### a. Distance calculation
+### a. distance calculation
 <p align="center">
   <img src="https://images.prismic.io/turing/65a53be67a5e8b1120d58808_image1_11zon_fa4497e473.webp?auto=format,compress" 
        alt="Euclidean distance calculation" 
@@ -33,7 +33,7 @@ To understand the concept of euclidean distance, you can refer to this short vid
 
 <br>
 
-### b. Angle calculation
+### b. angle calculation
 The direction the turtle must move depends on the angle difference between:
 - the angle to the target
 - the turtle’s current heading
@@ -65,18 +65,36 @@ Observation for angles in below range :
   
 It is observed for the domain `(−π/2, π/2)` the range has a unique value for every θ. After that the values keep repeating for intervals  `(π/2, 3π/2)`, `(3π/2, 5π/2).` So the principal domain  `(−π/2, π/2)`  was chosen.
 
-<br>
+<div align="center">
 
+| **Domain and Range for** | **tan(θ)** | **tan⁻¹(z)** |
+|:--:|:--:|:--:|
+| **Domain** | (−π/2, π/2) | (−∞, +∞) |
+| **Range**  | (−∞, +∞) | (−π/2, π/2) |
+
+</div>
+
+<br>
+<br>
 
 > 💭 **Question:**  
 > Given that the tangent function is periodic with a period of π, what makes (−π/2, π/2) the preferred principal domain rather than (0, π) or another equivalent interval?
 
-The chosen domain has to be `continuous`, `monotonically increasing` with `one-to-one unique mapping`. This makes the above mentioned intervals valid.
+- The chosen domain has to be `continuous`, `monotonically increasing` with `one-to-one unique mapping`. This makes the above mentioned intervals valid.
+- From the above valid intervals, **`(−π/2, π/2)`** was chosen because of its `symmetry about 0`, which gives it the property of an `odd function`:  
+<p align="center">
+  <img src="https://latex.codecogs.com/png.image?\dpi{120}&space;\arctan(-x)=-\arctan(x)" alt="arctan odd function property" />
+</p>
+
+- Because of this symmetry about the origin, evaluating the tangent function for positive values of θ is sufficient to infer its behavior for negative values as well.
+- Calculations were simpler when functions had this property and analysis was more intuitive since many natural phenomena have symmetry (pendulums, springs, waves)
+ 
 <p align="left">
   <img src="https://github.com/Aashishkumar-07/ros2-basics/blob/main/assets/images/domain_selection_rule.png?raw=true" 
        alt="Domain Selection Rule for Tangent Function" 
        width="600">
 </p>
+
 
 <br>
 
@@ -94,7 +112,7 @@ The chosen domain has to be `continuous`, `monotonically increasing` with `one-t
 
 #### 🔸 `atan2(y, x)` — the Quadrant-Aware Version ✅
 
-`atan2(y, x)` solves this by considering both `x and `y signs` ,  allowing it to determine the `true angle` from the origin to the target point (x, y).
+`atan2(y, x)` solves this by considering both `x and y signs` ,  allowing it to determine the `true angle` from the origin to the target point (x, y).
 
 **Domain and range for `tan⁻¹(z)`**
 
@@ -105,7 +123,7 @@ Thus, `atan2` gives the `correct angular direction` of the target relative to th
 
 <br>
 
-### c. **Computing velocities for motion control**
+### c. computing velocities for motion control
 
 ```
 def linear_vel(self, constant=1):
@@ -135,7 +153,7 @@ def angular_vel(self, constant=2):
 ```atan2(y2-y1, x2-x1) = atan2(0.55,0.06) = 83.77 degree```
 
 - *steering angle*: angle to the `target turtle(green)` from `current turtle(blue)` 
-- *self.parent_pose.theta*:   = 178 degree
+- *self.parent_pose.theta*: current heading angle of `turtle(blue)` = 178 degree
 - *angle_diff*: `83.77 - 178 = -94 degree`. The `current turtle(blue)` must rotate `94 degrees clockwise` from its current facing angle to reach the `target turtle(green)`.
 
 <br>
@@ -151,13 +169,13 @@ def angular_vel(self, constant=2):
 
 `atan2(y2-y1, x2-x1) = atan2(10,0) = 90 degree`
 
-- *steering angle*: angle to the `target turtle(green)` from `current turtle(blue)`
-- *self.parent_pose.theta*: current heading angle of `turtle’(blue)`  = -178 degree
-- *angle_diff*: `90 - (-178) = 268 degree`  The `current turtle(blue)` must rotate `268 degrees anti clockwise` from its current facing angle to reach the `target turtle(green)`. It is taking the `longer path rather than the shorter path` of -82 degree (i.e moving `82 degree clockwise`). To achieve this whenever the `angle_diff becomes greater than 180 / -180 degree (pi /-pi radians) we adjust it`
+- *steering angle*: angle to the `target turtle(green)` from `current turtle(yellow)`
+- *self.parent_pose.theta*: current heading angle of `turtle(yellow)`  = -178 degree
+- *angle_diff*: `90 - (-178) = 268 degree`  The `current turtle(yellow)` must rotate `268 degrees anti clockwise` from its current facing angle to reach the `target turtle(green)`. It is taking the `longer path rather than the shorter path` of -82 degree (i.e moving `82 degree clockwise`). To achieve this whenever the `angle_diff becomes greater than 180 / -180 degree (pi /-pi radians) we adjust it`
 
 <br>
 
-### d.Velocity control
+### d. velocity control
 
 Both `linear` &amp; `angular velocities` are multiplied by constants:
 
@@ -168,3 +186,14 @@ These *constants* act as `gain factors`, ensuring smooth motion:
 
 - When the `distance` or `angle` to the target is `large`, the velocity is `higher` enabling faster movement.
 - As the turtle gets `closer` to the target (distance or angle difference decreases), the velocity `slows down` — ensuring `smooth deceleration` and `precise alignment`, rather than overshooting or oscillating
+
+<br>
+
+### 🏗️ Architecture diagram 
+
+<p align="center">
+  <img src="https://github.com/Aashishkumar-07/ros2-basics/blob/main/assets/images/turtlesim_node_architecture.png" 
+       alt="atan_values"
+  >
+  <br>
+</p>
