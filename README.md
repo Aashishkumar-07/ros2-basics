@@ -106,7 +106,7 @@ It is observed for the domain `(−π/2, π/2)` the range has a unique value for
        width="800"/>
 </p>
 
-`atan(y/x)` only gives  the `slope angle`. It does not take into account which `quadrant` the point (x, y) lies in. Given its range of `(−π/2, π/2)` for any given domain it covers `only the 1st & 4th quadrants` but in a real world scenario the target can be at any of these quadrants making both slope and quadrant an important parameter for determining the correct direction
+`atan(y/x)`  only returns the `slope angle` and ignores which quadrant the point (x, y) lies in. Because its range is limited to (−π/2, π/2), it represents directions only in the 1st and 4th quadrants, making it insufficient when the actual target could lie in any of the four quadrants
 
 <br>
 
