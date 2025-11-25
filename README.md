@@ -6,8 +6,8 @@
 - `🧩 Services` – It follows a client-server model with a request & response message where only 1 server can exist per service but multiple clients can connect to it.
 - `⚙️ Parameters` – named configuration values declared in code whose value are passed at node runtime.
 - `💾 Bags` – useful for recording data from topics for any amount of time &amp; then replaying that data later
-- `🐢 Turtlesim` – The “Hello World 🌍” of robotics used for simulating &amp; controlling turtles for learning &amp; visualization
-- `🧰 RQT` – A GUI toolkit for visualizing and debugging ROS2 nodes.
+- `🐢 Turtlesim` – The “Hello World 🌍” of robotics. It is used for understanding ROS2 fundamentals such as topics, services and parameters by simulating &amp; controlling turtles
+- `🧰 RQT` – A GUI framework in ROS2 for visualizing and debugging nodes, topics, services, and parameters through various plugins (like rqt_graph, rqt_plot)
 
 <br>
 <br>
@@ -145,7 +145,7 @@ def angular_vel(self, constant=2):
 **🌀 Angular adjustment**
 
 <p align="center">
-  <img src="https://github.com/Aashishkumar-07/ros2-basics/blob/main/assets/images/path_computation_to_target.png" 
+  <img src="https://github.com/Aashishkumar-07/ros2-basics/blob/main/assets/images/source_target_turtle_1.png" 
        alt="atan_values"
        width="500"/>
 </p>
@@ -159,11 +159,14 @@ def angular_vel(self, constant=2):
 <br>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Aashishkumar-07/ros2-basics/main/assets/images/longer_shorter_path_to_target.png" 
+  <img src="https://raw.githubusercontent.com/Aashishkumar-07/ros2-basics/main/assets/images/source_target_turtle_2.png" 
        alt="atan_values"
        width="500">
   <br>
-  <em>Source: (-5, -5)  Target: (-5, 5)</em>
+  <em>
+    Source Turtle (yellow) : (-5, -5) at -135 degree <br>
+    Target Turtle (green) : (-5, 5) at 135 degree 
+  </em>
 </p>
 
 
@@ -171,7 +174,7 @@ def angular_vel(self, constant=2):
 
 - *steering angle*: angle to the `target turtle(green)` from `current turtle(yellow)`
 - *self.parent_pose.theta*: current heading angle of `turtle(yellow)`  = -178 degree
-- *angle_diff*: `90 - (-178) = 268 degree`  The `current turtle(yellow)` must rotate `268 degrees anti clockwise` from its current facing angle to reach the `target turtle(green)`. It is taking the `longer path rather than the shorter path` of -82 degree (i.e moving `82 degree clockwise`). To achieve this whenever the `angle_diff becomes greater than 180 / -180 degree (pi /-pi radians) we adjust it`
+- *angle_diff*: `90 - (-178) = 268 degree`  The `current turtle(yellow)` must rotate `268 degrees anti clockwise` from its current facing angle to reach the `target turtle(green)`. It is taking the `longer path rather than the shorter path` of -92 degree (i.e moving `92 degree clockwise`). To achieve this whenever the `angle_diff becomes greater than 180 / -180 degree (pi /-pi radians) we adjust it`
 
 <br>
 
