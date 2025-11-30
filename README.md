@@ -18,6 +18,11 @@ This project uses the turtlesim package in ROS 2 to demonstrate *object motion* 
 
 <br>
 
+https://github.com/user-attachments/assets/f5e71cf6-df59-4afc-b75c-7ba40f1d0400
+
+<br>
+<br>
+
 ### 🧭 Logic behind moving towards the target in a 2D plane
 ### a. Distance calculation
 <p align="center">
@@ -188,7 +193,7 @@ Both `linear` &amp; `angular velocities` are multiplied by constants:
 These *constants* act as `gain factors`, ensuring smooth motion:
 
 - When the `distance` or `angle` to the target is `large`, the velocity is `higher` enabling faster movement.
-- As the turtle gets `closer` to the target (distance or angle difference decreases), the velocity `slows down` — ensuring `smooth deceleration` and `precise alignment`, rather than overshooting or oscillating
+- As the turtle gets `closer` to the target (distance or angle difference decreases), the velocity `slows down` ensuring `smooth deceleration` and `precise alignment`, rather than overshooting or oscillating
 
 <br>
 
