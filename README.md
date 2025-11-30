@@ -3,7 +3,7 @@
 - `📦 Packages` – Independent, reusable unit comprising multiple nodes (e.g., a camera package).
 - `🤖 Nodes` – Individual subprograms, each performing a specific function (e.g., camera driver, image processor).
 - `🗣️ Topics` – Nodes publish messages to a topic which are received by subscribers in real time through DDS’s publish–subscribe mechanism.
-- `🧩 Services` – It follows a client-server model with a request & response message where only 1 server can exist per service but multiple clients can connect to it.
+- `🧩 Services` – It follows a client-server model with a request & response message where only 1 server exists per service but multiple clients can connect to it.
 - `⚙️ Parameters` – named configuration values declared in code whose value are passed at node runtime.
 - `💾 Bags` – useful for recording data from topics for any amount of time &amp; then replaying that data later
 - `🐢 Turtlesim` – The “Hello World 🌍” of robotics. It is used for understanding ROS2 fundamentals such as topics, services and parameters by simulating &amp; controlling turtles
@@ -19,7 +19,7 @@ This project uses the turtlesim package in ROS 2 to demonstrate *object motion* 
 <br>
 
 ### 🧭 Logic behind moving towards the target in a 2D plane
-### a. distance calculation
+### a. Distance calculation
 <p align="center">
   <img src="https://images.prismic.io/turing/65a53be67a5e8b1120d58808_image1_11zon_fa4497e473.webp?auto=format,compress" 
        alt="Euclidean distance calculation" 
@@ -33,7 +33,7 @@ To understand the concept of euclidean distance, you can refer to this short vid
 
 <br>
 
-### b. angle calculation
+### b. Angle calculation
 The direction the turtle must move depends on the angle difference between:
 - the angle to the target
 - the turtle’s current heading
@@ -114,7 +114,7 @@ It is observed for the domain `(−π/2, π/2)` the range has a unique value for
 
 `atan2(y, x)` solves this by considering both `x and y signs` ,  allowing it to determine the `true angle` from the origin to the target point (x, y).
 
-**Domain and range for `tan⁻¹(z)`**
+**Domain and range for `atan2(z)`**
 
 - Domain: (−∞, +∞)
 - Range: (−π, π) — covering `all 4 quadrants`
@@ -123,7 +123,7 @@ Thus, `atan2` gives the `correct angular direction` of the target relative to th
 
 <br>
 
-### c. computing velocities for motion control
+### c. Computing velocities for motion control
 
 ```
 def linear_vel(self, constant=1):
@@ -178,7 +178,7 @@ def angular_vel(self, constant=2):
 
 <br>
 
-### d. velocity control
+### d. Velocity control
 
 Both `linear` &amp; `angular velocities` are multiplied by constants:
 
